@@ -1,0 +1,14 @@
+.rbc-date-cell:first-child,.rbc-header:first-child{
+    color:red;
+}
+.rbc-date-cell:last-child,.rbc-header:last-child{
+    color:blue;
+}
+.rbc-btn-group>button:first-child{
+    display:none;
+}
+.rbc-event-allday{
+    width:13px;
+    height:13px;
+    border-radius:50%;
+}
