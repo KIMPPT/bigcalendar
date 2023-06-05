@@ -70,24 +70,25 @@ export default function Main() {
         eventday.day.month() === moment(date).month() &&
         eventday.day.date() === moment(date).date()
       )
-        return {style:{backgroundColor:"blue"}}
-        //{ style: { backgroundColor: "red" } };
-      else return {style:{backgroundColor:"red"}};
+        return { style: { backgroundColor: "blue" } };
+      //{ style: { backgroundColor: "red" } };
+      else return { style: { backgroundColor: "red" } };
     });
   };
   const defaultDate = useMemo(() => now, []);
   const customDayPropGetter2 = (date) => {
-    for(let i=0;i<event.length;i++)
-    {
-    if (date.getMonth()===moment(event[i].day).month()&&
-    date.getDate()===moment(event[i].day).date())
+    for (let i = 0; i < event.length; i++) {
+      if (
+        date.getMonth() === moment(event[i].day).month() &&
+        date.getDate() === moment(event[i].day).date()
+      )
         return {
-            className: 'special-day',
-            style: {backgroundColor:"Blue"},
+          className: "special-day",
+          style: { backgroundColor: "Blue" },
         };
-    else return {};
-      }
-};
+      else return {};
+    }
+  };
   return (
     <Calendar
       dayPropGetter={customDayPropGetter2}
