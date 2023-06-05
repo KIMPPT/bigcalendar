@@ -86,7 +86,7 @@ export default function Main() {
           className: "special-day",
           style: { backgroundColor: "Blue" },
         };
-      else return {};
+        else return {};
     }
   };
   return (
