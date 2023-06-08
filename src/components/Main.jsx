@@ -2,8 +2,10 @@ import React, { useCallback, useMemo } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./main.css";
+import "./main.scss";
 import Toolbar from "./Toolbar";
+import CustomDateHeader from "./DateHeader";
+import customdatecelwrapper from "./Customdatecelwrapper";
 export default function Main() {
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
@@ -13,7 +15,11 @@ export default function Main() {
     { day: moment("2023-06-08") },
     { day: moment("2023-07-05") },
     { day: moment("2023-05-23") },
+    { day: moment("2023-06-15") },
+    { day: moment("2023-06-30") },
   ];
+  const thismonth = event.filter((e) => e.day.month() === moment(now).month());
+  console.log(thismonth);
   const tomorrow = moment(now).add(1, "M");
   //참고한 첫번째 함수. 작동은 하는데 다수의 경우 어떻게 넣어야 할지 모르겠음
   const dayPropGetter = useCallback(
@@ -87,27 +93,65 @@ export default function Main() {
   //모양을 참고해서 수정한 결과이다. 그 결과 복수의 날짜에도 적용이 된다
   //이 모양을 최종적으로 채택할 예정
   const customDayPropGetter2 = (date) => {
-    for (let i = 0; i < event.length; i++) {
+    for (let i = 0; i < thismonth.length; i++) {
+      console.log(thismonth[i].day);
+      switch (
+        moment(thismonth[i].day).month() === date.getMonth() &&
+        moment(thismonth[i].day).date() === date.getDate()
+      ) {
+        case true:
+          return { className: "special-day" };
+          continue;
+        default:
+          return { style: { backgroundColor: "yellow" } };
+          continue;
+      }
+    }
+    /*
+    for (let i = 0; i < thismonth.length; i++) {
       if (
-        date.getMonth() === moment(event[i].day).month() &&
-        date.getDate() === moment(event[i].day).date()
-      )
+        moment(thismonth[i].day).month() === date.getMonth() &&
+        moment(thismonth[i].day).date() === date.getDate()
+      ){
         return {
           className: "special-day",
-          style: { backgroundColor: "Blue" },
+          style: { backgroundColor: "rgba(45,12,105,0.2)" },
         };
+      }
+      continue; 
     }
+      
+     */
+    /*
+        약속이 잡힌 날짜가 아는 곳들에 색을 칠하는 else문
+        문제점 : 해당월의 약속이 여러개여도 맨 앞 하나를 제외한 모든 날에 색을 칠해버림
+        */
   };
+
 
   //초기에 보여줄 캘린더 창
   const defaultDate = useMemo(() => now, []);
+  //해당월의 날짜수
+  const monthdays =
+    moment(now).month() + 1 === (1 || 3 || 5 || 7 || 8 || 10 || 12)
+      ? 31
+      : moment(now).month + 1 === 2
+      ? 28
+      : 30;
+
   return (
     <Calendar
       dayPropGetter={customDayPropGetter2}
       defaultDate={defaultDate}
       localizer={localizer}
       style={{ height: 300, width: 300 }}
-      components={{ toolbar: Toolbar }}
+      components={{
+        toolbar: Toolbar,
+        month: {
+          dateHeader: CustomDateHeader,
+        },
+        dateCellWrapper: customdatecelwrapper,
+      }}
     />
   );
 }
