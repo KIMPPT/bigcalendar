@@ -5,14 +5,12 @@ export const useSlice = createSlice({
   initialState: new Date(),
   reducers: {
     next2month: (state) => {
-      state=moment(state).add(2, "M");
-      return new Date(state);
+      return new Date(state.setMonth(state.getMonth() + 2));
     },
     prev2month: (state) => {
-      state=moment(state).subtract(2, "M");
-      return new Date(state);
+      return new Date(state.setMonth(state.getMonth() - 2));
     },
   },
 });
-export const { next2month,prev2month } = useSlice.actions;
+export const { next2month, prev2month } = useSlice.actions;
 export default useSlice.reducer;

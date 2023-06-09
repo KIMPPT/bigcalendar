@@ -13,15 +13,19 @@ export default function Toolbar(props) {
           이번달
         </button>
         */}
+        {/*
         <button type="button" onClick={navigate.bind(null, "PREV")}>
           ◁
         </button>
+         */}
         <span className="rbc-toolbar-label">{`${
           date.getMonth() + 1
         }월 ${date.getDate()}일`}</span>
+        {/*
         <button type="button" onClick={navigate.bind(null, "NEXT")}>
           ▷
         </button>
+         */}
       </span>
     </div>
   );
