@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -6,7 +6,12 @@ import "./main.scss";
 import Toolbar from "./Toolbar";
 import CustomDateHeader from "./DateHeader";
 import customdatecelwrapper from "./Customdatecelwrapper";
+import { useSelector, useDispatch } from "react-redux";
+import { next2month, prev2month } from "../slice/useSlice";
 export default function Main() {
+  const dispatch = useDispatch();
+  const nowdate = useSelector((state) => state.use);
+  console.log(nowdate);
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
   const now = new Date();
@@ -19,7 +24,7 @@ export default function Main() {
     { day: moment("2023-06-30") },
   ];
   const thismonth = event.filter((e) => e.day.month() === moment(now).month());
-  console.log(thismonth);
+  //console.log(thismonth);
   const tomorrow = moment(now).add(1, "M");
   //참고한 첫번째 함수. 작동은 하는데 다수의 경우 어떻게 넣어야 할지 모르겠음
   const dayPropGetter = useCallback(
@@ -94,7 +99,7 @@ export default function Main() {
   //이 모양을 최종적으로 채택할 예정
   const customDayPropGetter2 = (date) => {
     for (let i = 0; i < thismonth.length; i++) {
-      console.log(thismonth[i].day);
+      //console.log(thismonth[i].day);
       switch (
         moment(thismonth[i].day).month() === date.getMonth() &&
         moment(thismonth[i].day).date() === date.getDate()
@@ -127,31 +132,27 @@ export default function Main() {
         문제점 : 해당월의 약속이 여러개여도 맨 앞 하나를 제외한 모든 날에 색을 칠해버림
         */
   };
-
-
   //초기에 보여줄 캘린더 창
-  const defaultDate = useMemo(() => now, []);
-  //해당월의 날짜수
-  const monthdays =
-    moment(now).month() + 1 === (1 || 3 || 5 || 7 || 8 || 10 || 12)
-      ? 31
-      : moment(now).month + 1 === 2
-      ? 28
-      : 30;
-
+  const defaultDate = useMemo(() => nowdate, []);
   return (
-    <Calendar
-      dayPropGetter={customDayPropGetter2}
-      defaultDate={defaultDate}
-      localizer={localizer}
-      style={{ height: 300, width: 300 }}
-      components={{
-        toolbar: Toolbar,
-        month: {
-          dateHeader: CustomDateHeader,
-        },
-        dateCellWrapper: customdatecelwrapper,
-      }}
-    />
+    <div>
+      <button onClick={() => dispatch(next2month())}>+2</button>
+      <button onClick={() => dispatch(prev2month())}>-2</button>
+      <Calendar
+        date={nowdate?nowdate:now}
+        dayPropGetter={customDayPropGetter2}
+        defaultDate={defaultDate}
+        localizer={localizer}
+        style={{ height: 300, width: 300 }}
+        components={{
+          toolbar: Toolbar,
+          month: {
+            dateHeader: CustomDateHeader,
+          },
+          dateCellWrapper: customdatecelwrapper,
+        }}
+      />
+      <div onClick={() => alert("abc")}>클릭</div>
+    </div>
   );
 }

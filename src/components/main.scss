@@ -1,13 +1,16 @@
-.rbc-date-cell:first-child,.rbc-header:first-child{
-    color:red;
+.rbc-date-cell:first-child,
+.rbc-header:first-child {
+  color: red;
 }
-.rbc-date-cell:last-child,.rbc-header:last-child{
-    color:blue;
+.rbc-date-cell:last-child,
+.rbc-header:last-child {
+  color: blue;
 }
-.rbc-day-bg{
-    color:yellow
+.rbc-day-bg {
+  background-color: yellow;
+  z-index:2;
 }
-.special-day{
-    background-color:green;
-    flex: 1 0;
+.special-day {
+  background-color: green;
+  flex: 1 0;
 }

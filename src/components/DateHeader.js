@@ -1,12 +1,3 @@
-export default function CustomDateHeader({
-  label,
-  drilldownView,
-  onDrillDown,
-}) {
-  return (
-    <span>
-      <p href="#">{label}</p>
-      <button>Book Class</button>
-    </span>
-  );
+export default function CustomDateHeader({ label }) {
+  return <span>{label}</span>;
 }

@@ -1,10 +1,10 @@
 export default function Toolbar(props) {
   const { date } = props;
-
+  console.log(date)
   const navigate = (action) => {
+    console.log(action)
     props.onNavigate(action);
   };
-
   return (
     <div className="rbc-toolbar">
       <span className="rbc-btn-group">
@@ -23,7 +23,6 @@ export default function Toolbar(props) {
           ▷
         </button>
       </span>
-      
     </div>
   );
 }
