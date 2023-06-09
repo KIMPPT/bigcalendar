@@ -12,6 +12,7 @@ export default function Main() {
   const dispatch = useDispatch();
   const nowdate = useSelector((state) => state.use);
   console.log(nowdate);
+  const nextmonthdate = moment(nowdate).add(1, "M");
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
   const now = new Date();
@@ -134,12 +135,13 @@ export default function Main() {
   };
   //초기에 보여줄 캘린더 창
   const defaultDate = useMemo(() => nowdate, []);
+  const defaultDate2 = useMemo(() => nextmonthdate, []);
   return (
     <div>
       <button onClick={() => dispatch(next2month())}>+2</button>
       <button onClick={() => dispatch(prev2month())}>-2</button>
       <Calendar
-        date={nowdate?nowdate:now}
+        date={nowdate ? nowdate : now}
         dayPropGetter={customDayPropGetter2}
         defaultDate={defaultDate}
         localizer={localizer}
@@ -153,6 +155,20 @@ export default function Main() {
         }}
       />
       <div onClick={() => alert("abc")}>클릭</div>
+      <Calendar
+        date={nextmonthdate}
+        dayPropGetter={customDayPropGetter2}
+        defaultDate={defaultDate2}
+        localizer={localizer}
+        style={{ height: 300, width: 300 }}
+        toolbar={null}
+        components={{
+          month: {
+            dateHeader: CustomDateHeader,
+          },
+          dateCellWrapper: customdatecelwrapper,
+        }}
+      />
     </div>
   );
 }
