@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -12,8 +12,15 @@ export default function Main() {
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
   const dispatch = useDispatch();
-  const nowdate = useSelector((state) => state.use);
-  console.log(nowdate);
+  //useSelector로 slice의 초기값을 불러낸다
+  const slicedate = useSelector((state) => state.use);
+  //객체로 만들었기 때문에 각자 불러낸다
+  const nowdate=slicedate.nowdate;
+  //두번째 달력의 경우 다음달을 나타내야 하기 때문에 현재 달에서 +1한 값으로 변환해준다
+  //값을 2개 만든 이유는 setMonth 함수는 해당 값을 바로 바꾸어서 return 시켜주기 때문에 nowdate를 써버리면 nowdate값도 바뀌어 버린다
+  const nextdate=new Date(slicedate.nextdate.setMonth(nowdate.getMonth()+1));
+  //정상적으로 나타나는지 확인하기 위해 콘솔에 표시
+  console.log(nowdate , nextdate)
   const now = new Date();
   //배열을 들고올 경우 다음과 같이 들고와야 한다
   const event = [
@@ -136,6 +143,7 @@ export default function Main() {
   const defaultDate = useMemo(() => nowdate, []);
   return (
     <div>
+      {/*useSlice의 aciton함수로 달력을 넘겨주는 함수 */}
       <button onClick={() => dispatch(next2month())}>+2</button>
       <button onClick={() => dispatch(prev2month())}>-2</button>
       <Calendar
@@ -153,11 +161,11 @@ export default function Main() {
         }}
       />
       <div onClick={() => alert("abc")}>클릭</div>
-      {/*
+      
       <Calendar
-        date={!next2month?next2month:nextmonth}
+        date={nextdate}
         dayPropGetter={customDayPropGetter2}
-        defaultDate={defaultDate2}
+        defaultDate={defaultDate}
         localizer={localizer}
         style={{ height: 300, width: 300 }}
         components={{
@@ -168,7 +176,7 @@ export default function Main() {
           dateCellWrapper: customdatecelwrapper,
         }}
       />
-       */}
+       
     </div>
   );
 }
