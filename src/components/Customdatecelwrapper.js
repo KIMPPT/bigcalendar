@@ -28,8 +28,12 @@ export default function customdatecelwrapper(props) {
   //최종 해당일에 약속이 있는지 없는지 확인할 수 있는 선언
   //console.log(sum);
   const clickday1 = () => console.log("abc");
-  function clickevent1(){alert("abc")}
-  function clickevent2(){alert("def")}
+  function clickevent1() {
+    alert("abc");
+  }
+  function clickevent2() {
+    alert("def");
+  }
   return sum ? (
     <div className="special-day rbc-day-bg" onClick={clickevent1}></div>
   ) : (
