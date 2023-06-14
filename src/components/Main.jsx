@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
@@ -14,32 +14,54 @@ import {
   prev2month,
 } from "../slice/useSlice";
 export default function Main({ nowday, nextday }) {
-  console.log(`${nowday},${nextday}`)
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
   const dispatch = useDispatch();
   //useSelector로 slice의 초기값을 불러낸다
-  const slicedate = useSelector((state) => state.use);
-  //객체로 만들었기 때문에 각자 불러낸다
+  //첫번째 방법 : slice로 store로 접근해서 자료값을 수정하고 가져오기
+  /*
   const nowdate = slicedate.nowdate;
-  //두번째 달력의 경우 다음달을 나타내야 하기 때문에 현재 달에서 +1한 값으로 변환해준다
-  //값을 2개 만든 이유는 setMonth 함수는 해당 값을 바로 바꾸어서 return 시켜주기 때문에 nowdate를 써버리면 nowdate값도 바뀌어 버린다
   const nextdate = slicedate.nextdate;
+  const [nowday2, setNowday2] = useState(nowdate);
+  const [nextday2, setNextday2] = useState(nextdate);
+  */
+  //console.log(`slice로 불러온 값 : ${nowday2}`);
+  //console.log(`slice로 불러온 값 : ${nextday2}`);
+  //두번째 방법 : props로 받아와서 usestate에 넣어서 사용
+  const [nowdate2,setNowdate2]=useState(nowday);
+  const [nextdate2,setNextdate2]=useState(nextday);
   //초기에 보여줄 캘린더 창
-  const defaultDate = useMemo(() => nowdate, []);
+  const defaultDate = useMemo(() => nowday, [nowday]);
+  const onNavigate = useCallback(
+    (e) => {
+      setNowdate2(e);
+      setNextdate2(e);
+    },
+    [setNowdate2]
+  );
+  /*
+  console.log(`slice에서 들고온 첫 달:${nowdate}`);
+  console.log(`slice에서 들고온 다음 달:${nextdate}`);
+   */
+  console.log(`state에서 들고온 첫 달:${nowdate2}`);
+  console.log(`state에서 들고온 첫 달:${nextdate2}`);
+  console.log(`props로 들고온 이번달:${nowday}`);
+  console.log(`props로 들고온 다음달:${nextday}`)
   return (
     <div>
-      {/*useSlice의 aciton함수로 달력을 넘겨주는 함수 */}
+      {/*useSlice의 aciton함수로 달력을 넘겨주는 함수 
       <button onClick={() => dispatch(next2month())}>+2</button>
       <button onClick={() => dispatch(prev2month())}>-2</button>
       <br />
       <button onClick={() => dispatch(next1month())}>+1</button>
       <button onClick={() => dispatch(prev1month())}>-1</button>
+      */}
       <Calendar
         date={nowday}
+
         defaultDate={defaultDate}
         localizer={localizer}
-        style={{ height: 300}}
+        style={{ height: 300 }}
         components={{
           toolbar: Toolbar,
           month: {
