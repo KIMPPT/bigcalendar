@@ -1,6 +1,5 @@
 export default function Toolbar(props) {
   const { date } = props;
-  console.log(date);
   const navigate = (action) => {
     console.log(action);
     props.onNavigate(action);
